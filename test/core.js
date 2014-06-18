@@ -12,12 +12,7 @@ describe('MediaSequence', function(){
     mediaElement.muted = true;
 
     sandbox = sinon.sandbox.create();
-    ms = new MediaSequence(mediaElement, [
-      { start: 0, end: 2 },
-      { start: 1, end: 3},
-      { start: 5, end: 10 },
-      { start: 15, end: 20 }
-    ]);
+    ms = new MediaSequence(mediaElement);
 
     playStub = sandbox.stub(ms, 'play');
     seekStub = sandbox.stub(ms, 'seek');
@@ -93,17 +88,35 @@ describe('MediaSequence', function(){
     });
   });
 
-  xdescribe('playNext', function(){
+  describe('getNext', function(){
     beforeEach(function(){
-      p.add([
-        { start: 10, end: 15 },
+      ms.add([
         { start: 12, end: 18 },
+        { start: 20, end: 25 },
         { start: 12, end: 14 },
-        { start: 20, end: 25 }
+        { start: 10, end: 15 }
       ]);
     });
 
-    it('should return the first segment if ')
+    it('should select a sequence starting at 10 if the reference time is 0', function(){
+      expect(ms.getNext(0)).to.have.property('start', 10);
+    });
+
+    it('should select the next sequence starting at 12 if the reference time coincides with the beginning of a sequence starting at 10', function(){
+      expect(ms.getNext(10)).to.have.property('start', 12);
+    });
+
+    it('should select the next sequence starting at 12 if the reference time is included in a sequence starting at 10', function(){
+      expect(ms.getNext(11)).to.have.property('start', 12);
+    });
+
+    it('should select the farther ending sequence for an equal start time of 12', function(){
+      expect(ms.getNext(11)).to.have.property('end', 18);
+    });
+
+    it('should not return any sequence for a start time greater or equal to 20', function(){
+      expect(ms.getNext(20)).to.be.a('null');
+    });
   });
 });
 
