@@ -1,0 +1,42 @@
+{
+  "name": "media-sequence",
+  "version": "0.1.0",
+  "description": "Manual and automatic HTML5 media sequenced playback. And plain JavaScript, no library required.",
+  "main": "./index.js",
+  "scripts": {
+    "test": "./node_modules/karma/bin/karma start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:oncletom/media-sequence.git"
+  },
+  "keywords": [
+    "html5",
+    "video",
+    "audio",
+    "sequence",
+    "playback",
+    "sequenced"
+  ],
+  "author": "Thomas Parisot <thomas.parisot@bbc.co.uk> (https://oncletom.io)",
+  "license": "Apache-2",
+  "bugs": {
+    "url": "https://github.com/oncletom/media-sequence/issues"
+  },
+  "homepage": "https://github.com/oncletom/media-sequence",
+  "devDependencies": {
+    "chai": "^1.9.1",
+    "karma": "^0.12.16",
+    "karma-bro": "^0.5.0",
+    "karma-chai": "^0.1.0",
+    "karma-chrome-launcher": "^0.1.4",
+    "karma-firefox-launcher": "^0.1.3",
+    "karma-mocha": "^0.1.4",
+    "karma-phantomjs-launcher": "^0.1.4",
+    "karma-sinon": "^1.0.3",
+    "karma-sinon-chai": "^0.1.6",
+    "mocha": "^1.20.1",
+    "sinon": "^1.10.2",
+    "watchify": "^0.10.2"
+  }
+}

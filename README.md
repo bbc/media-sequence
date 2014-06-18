@@ -35,6 +35,10 @@ sequencer.playAll();
 
 ## `new MediaSequence(el, sequences)`
 
+## `sequencer.add(sequences)`
+
+Adds new sequences to the actual stack.
+
 ## `sequencer.play()`
 
 Registers event listeners and starts the playback from the current time position.
