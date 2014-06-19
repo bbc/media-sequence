@@ -1,6 +1,7 @@
 'use strict';
 
 var MediaSequence = require('../index.js');
+var Scheduler = require('../lib/scheduler.js');
 var sinon = require('sinon');
 
 describe('MediaSequence', function(){
@@ -60,9 +61,9 @@ describe('MediaSequence', function(){
     });
 
     it('should trigger a playfrom.end when the endTime is reached', function(done){
-      ms.on('playfrom.end', function(endTime, preventDefault){
-        expect(endTime).to.equal(12);
-        expect(preventDefault.toString()).to.match(/isPrevented = true/);
+      ms.on('playfrom.end', function(sequence, scheduler){
+        expect(sequence).to.have.property('end', 12);
+        expect(scheduler.preventDefault.toString()).to.match(/isPrevented = true/);
 
         done();
       });
@@ -91,9 +92,9 @@ describe('MediaSequence', function(){
   describe('getNext', function(){
     beforeEach(function(){
       ms.add([
-        { start: 12, end: 18 },
         { start: 20, end: 25 },
         { start: 12, end: 14 },
+        { start: 12, end: 18 },
         { start: 10, end: 15 }
       ]);
     });
@@ -116,6 +117,81 @@ describe('MediaSequence', function(){
 
     it('should not return any sequence for a start time greater or equal to 20', function(){
       expect(ms.getNext(20)).to.be.a('null');
+    });
+  });
+
+  describe('playAll', function(){
+    var scheduler;
+
+    beforeEach(function(){
+      scheduler = new Scheduler();
+      ms.add([
+        { start: 10, end: 15 },
+        { start: 12, end: 14 },
+        { start: 12, end: 18 },
+        { start: 20, end: 25 }
+      ]);
+    });
+
+    it('should play the first sequence starting at 10', function(){
+      var spy = sandbox.spy(ms, 'playFrom');
+
+      ms.playAll();
+
+      expect(spy).to.be.calledWith(10, 15);
+    });
+
+    it('should then postpone from 15 to 18, as of the next ending segment', function(done){
+      var spy = sandbox.spy(scheduler, 'postponeTo');
+
+      ms.playAll();
+      ms.emit('playfrom.end', ms.sequences[0], scheduler);
+
+      process.nextTick(function(){
+        expect(spy).to.be.calledWith(18);
+
+        done();
+      });
+    });
+
+    it('should then play the sequence starting at 20', function(done){
+      var spy = sandbox.spy(ms, 'playFrom');
+
+      ms.playAll();
+      ms.emit('playfrom.end', ms.sequences[1], scheduler);
+
+      process.nextTick(function(){
+        expect(spy.lastCall).to.be.calledWith(20, 25);
+
+        done();
+      });
+    });
+
+    it('should then not try to play any other sequence once reached 25', function(done){
+      var spy = sinon.spy();
+      var scheduler = new Scheduler(0, spy);
+
+      ms.playAll();
+      ms.emit('playfrom.end', ms.sequences[3], scheduler);
+
+      process.nextTick(function(){
+        expect(spy).to.be.calledOnce;
+
+        done();
+      });
+    });
+
+    it('should also stop the playback once reached 25', function(done){
+      var spy = sandbox.spy(ms, 'pause');
+
+      ms.playAll();
+      ms.emit('playfrom.end', ms.sequences[3], scheduler);
+
+      process.nextTick(function(){
+        expect(spy).to.be.calledOnce;
+
+        done();
+      });
     });
   });
 });

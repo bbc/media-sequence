@@ -24,9 +24,8 @@
 # Usage
 
 ```js
-var el = document.querySelector('audio');
 var sequences = [{start: 0, end: 5}, {start: 12, end: 13}, {start: 21, end: 31}];
-var sequencer = new MediaSequence(el, sequences);
+var sequencer = new MediaSequence(new Audio('path/to/audio.ogg'), sequences);
 
 sequencer.playAll();
 ```
