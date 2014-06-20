@@ -119,7 +119,7 @@ describe('MediaSequence', function(){
     var scheduler;
 
     beforeEach(function(){
-      scheduler = new Scheduler();
+      scheduler = new Scheduler(0, sinon.spy());
       ms.add([
         { start: 10, end: 15 },
         { start: 12, end: 14 },
@@ -128,65 +128,45 @@ describe('MediaSequence', function(){
       ]);
     });
 
-    it('should play the first sequence starting at 10', function(){
-      var spy = sandbox.spy(ms, 'playFrom');
-
+    it('should seek and play the first sequence starting at 10', function(){
       ms.playAll();
 
-      expect(spy).to.be.calledWith(10, 15);
+      expect(seekStub).to.be.calledWith(10);
+      expect(playStub).to.be.calledOnce;
     });
 
     it('should then postpone from 15 to 18, as of the next ending segment', function(done){
-      var spy = sandbox.spy(scheduler, 'postponeTo');
-
-      ms.playAll();
-      ms.emit('playfrom.end', ms.sequences[0], scheduler);
-
-      process.nextTick(function(){
-        expect(spy).to.be.calledWith(18);
+      ms.on('playall.postpone', function(sequence){
+        expect(sequence).to.have.property('end', 18);
 
         done();
       });
+
+      ms.playAll();
+      ms.mediaElement.dispatchEvent(new CustomEvent('timeupdate', { detail: { currentTime: 15 } }));
     });
 
     it('should then play the sequence starting at 20', function(done){
-      var spy = sandbox.spy(ms, 'playFrom');
-
-      ms.playAll();
-      ms.emit('playfrom.end', ms.sequences[1], scheduler);
-
-      process.nextTick(function(){
-        expect(spy.lastCall).to.be.calledWith(20, 25);
+      ms.on('playall.sequence', function(sequence){
+        expect(sequence).to.have.property('start', 20);
 
         done();
       });
-    });
-
-    it('should then not try to play any other sequence once reached 25', function(done){
-      var spy = sinon.spy();
-      var scheduler = new Scheduler(0, spy);
 
       ms.playAll();
-      ms.emit('playfrom.end', ms.sequences[3], scheduler);
-
-      process.nextTick(function(){
-        expect(spy).to.be.calledOnce;
-
-        done();
-      });
+      ms.mediaElement.dispatchEvent(new CustomEvent('timeupdate', { detail: { currentTime: 18 } }));
     });
 
-    it('should also stop the playback once reached 25', function(done){
+    it('should stop the playback once reached 25', function(done){
       var spy = sandbox.spy(ms, 'pause');
 
-      ms.playAll();
-      ms.emit('playfrom.end', ms.sequences[3], scheduler);
-
-      process.nextTick(function(){
-        expect(spy).to.be.calledOnce;
-
+      ms.on('playall.end', function(){
+        expect(spy).to.have.been.calledOnce;
         done();
       });
+
+      ms.playAll();
+      ms.mediaElement.dispatchEvent(new CustomEvent('timeupdate', { detail: { currentTime: 25 } }));
     });
   });
 });
