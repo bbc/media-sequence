@@ -88,7 +88,8 @@ describe('MediaSequence', function(){
     beforeEach(function(){
       ms.add([
         { start: 20, end: 25 },
-        { start: 12, end: 14 },
+        { start: 12, end: 16 },
+        { start: 0, end: 5 },
         { start: 12, end: 18 },
         { start: 10, end: 15 }
       ]);
@@ -106,8 +107,16 @@ describe('MediaSequence', function(){
       expect(ms.getNext(11)).to.have.property('start', 12);
     });
 
-    it('should select the farther ending sequence for an equal start time of 12', function(){
-      expect(ms.getNext(11)).to.have.property('end', 18);
+    it('should select the closest ending sequence for an equal start time of 12', function(){
+      expect(ms.getNext(11)).to.have.property('end', 16);
+    });
+
+    it('should return the closest overlapping sequence', function(){
+      expect(ms.getNext(12, { overlap: true })).to.have.property('end', 15)
+    });
+
+    it('should return the closest overlapping sequence', function(){
+      expect(ms.getNext(15, { overlap: true })).to.have.property('end', 16)
     });
 
     it('should not return any sequence for a start time greater or equal to 20', function(){

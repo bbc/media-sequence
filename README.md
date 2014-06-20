@@ -38,25 +38,39 @@ sequencer.playAll();
 
 Adds new sequences to the actual stack.
 
-## `sequencer.play()`
-
-Registers event listeners and starts the playback from the current time position.
-
-## `sequencer.pause()`
-
-Unregisters event listeners and stops the playback.
-
 ## `sequencer.playAll()`
 
 Registers event listeners and starts the playback of all the sequences in a row.
 
-## `sequencer.playNext()`
-
-Starts the playback or jumps to the next available sequence in time, and continues to the next available sequences.
-
 ## `sequencer.playFrom(start, end)`
 
 Starts the playback from the `start` time and stops automatically at the `end` time.
+
+## `sequencer.getNext(referenceTime, options)`
+
+Returns the next sequence from a `referenceTime` numbered value.
+
+```js
+var ms = new MediaSequencer(…, [{ start: 3, end: 5 }, { start: 12, end: 13 }]);
+
+ms.getNext(0);
+// { start: 3, end: 5 }
+
+ms.getNext(3);
+// { start: 12, end: 13 }
+```
+
+If the `options.overlap` value is set to `true`, the returned sequence is allowed to overlap:
+
+```js
+var ms = new MediaSequencer(…, [{ start: 3, end: 5 }, {start: 3, end: 10 }, { start: 12, end: 13 }]);
+
+ms.getNext(3);
+// { start: 12, end: 13 }
+
+ms.getNext(3, { overlap: true });
+// {start: 3, end: 5 }
+```
 
 # Licence
 
