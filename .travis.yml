@@ -5,6 +5,6 @@ before_install:
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
 
-after_install:
+before_script:
   - "npm install grunt-cli"
   - "cd node_modules/karma && npm install && grunt build"
