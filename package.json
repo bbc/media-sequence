@@ -4,7 +4,10 @@
   "description": "Manual and automatic HTML5 media sequenced playback. And plain JavaScript, no library required.",
   "main": "./index.js",
   "scripts": {
-    "test": "./node_modules/karma/bin/karma start"
+    "test": "./node_modules/karma/bin/karma start",
+    "build": "npm run build-browserify && npm run build-compress",
+    "build-browser": "browserify -s media-sequence -r ./index.js > dist/media-sequence.js",
+    "build-compress": "uglifyjs dist/media-sequence.js --source-map dist/media-sequence.min.js.map --compress --screw-ie8 --mangle > dist/media-sequence.min.js"
   },
   "repository": {
     "type": "git",
@@ -25,6 +28,7 @@
   },
   "homepage": "https://github.com/oncletom/media-sequence",
   "devDependencies": {
+    "browserify": "^4.1.11",
     "chai": "^1.9.1",
     "karma": "^0.12.16",
     "karma-bro": "^0.5.0",
@@ -37,6 +41,7 @@
     "karma-sinon-chai": "^0.1.6",
     "mocha": "^1.20.1",
     "sinon": "^1.10.2",
+    "uglify-js": "^2.4.14",
     "watchify": "^0.10.2"
   }
 }
