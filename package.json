@@ -5,9 +5,9 @@
   "main": "./index.js",
   "scripts": {
     "test": "./node_modules/karma/bin/karma start",
-    "build": "npm run build-browserify && npm run build-compress",
-    "build-browser": "browserify -s media-sequence -r ./index.js > dist/media-sequence.js",
-    "build-compress": "uglifyjs dist/media-sequence.js --source-map dist/media-sequence.min.js.map --compress --screw-ie8 --mangle > dist/media-sequence.min.js"
+    "build": "npm run build-browser && npm run build-compress",
+    "build-browser": "browserify -s MediaSequence -r ./index.js > dist/media-sequence.js",
+    "build-compress": "uglifyjs dist/media-sequence.js --source-map dist/media-sequence.min.js.map --source-map-root ../ --source-map-url ./media-sequence.min.js.map --compress --screw-ie8 --mangle > dist/media-sequence.min.js"
   },
   "repository": {
     "type": "git",

@@ -159,7 +159,10 @@ describe('MediaSequence', function(){
       ms.on('playall.sequence', function(sequence){
         expect(sequence).to.have.property('start', 20);
 
-        done();
+        setTimeout(function(){
+          expect(seekStub.lastCall).to.have.been.calledWith(20);
+          done();
+        }, 0);
       });
 
       ms.playAll();
