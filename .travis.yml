@@ -7,4 +7,8 @@ before_install:
 
 before_script:
   - "npm install -g grunt-cli"
-  - "cd node_modules/karma && npm install && grunt build"
+  - "rm -rf ${TRAVIS_BUILD_DIR}/node_modules/karma"
+  - "cd ${TRAVIS_BUILD_DIR} && npm install https://github.com/karma-runner/karma/tarball/c071305b08f0dcb3cac1b9a04e6feefbbde13882"
+  - "head -n30 node_modules/karma/lib/preprocessor.js"
+  - "cd ${TRAVIS_BUILD_DIR}/node_modules/karma && npm install"
+  - "grunt --gruntfile ${TRAVIS_BUILD_DIR}/node_modules/karma/Gruntfile.coffee build"
