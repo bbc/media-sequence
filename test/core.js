@@ -61,26 +61,21 @@ describe('MediaSequence', function(){
     });
 
     it('should trigger a playfrom.end when the endTime is reached', function(done){
-      ms.on('playfrom.end', function(sequence, scheduler){
-        expect(sequence).to.have.property('end', 12);
-        expect(scheduler.preventDefault.toString()).to.match(/isPrevented = true/);
+      ms.on('playfrom.end', function(endTime, instance){
+        expect(endTime).to.equal(12);
 
         done();
       });
 
       ms.playFrom(10, 12);
-
-      sandbox.stub(ms, 'getCurrentTime').returns(12);
-      ms.mediaElement.dispatchEvent(new Event('timeupdate'));
+      ms.mediaElement.dispatchEvent(new CustomEvent('timeupdate', { detail: { currentTime: 12 } }));
     });
 
     it('should pause the playback by default when the endTime is reached', function(done){
       var pauseStub = sandbox.stub(ms, 'pause');
       ms.playFrom(10, 12);
 
-      // yield a time update
-      sandbox.stub(ms, 'getCurrentTime').returns(12);
-      ms.mediaElement.dispatchEvent(new Event('timeupdate'));
+      ms.mediaElement.dispatchEvent(new CustomEvent('timeupdate', { detail: { currentTime: 12 } }));
 
       setTimeout(function(){
         expect(pauseStub).to.have.been.calledOnce;
