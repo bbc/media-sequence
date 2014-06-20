@@ -6,5 +6,5 @@ before_install:
   - "sh -e /etc/init.d/xvfb start"
 
 before_script:
-  - "npm install grunt-cli"
+  - "npm install -g grunt-cli"
   - "cd node_modules/karma && npm install && grunt build"
