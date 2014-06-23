@@ -2,6 +2,8 @@
 
 > HTML5 media sequenced playback API: play one or multiple sequences of a same audio or video with plain JavaScript.
 
+![](demo.gif?raw=1)
+
 # Installation
 
 <table>
