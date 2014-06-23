@@ -1,6 +1,6 @@
 # media-sequence
 
-> Manual and automatic HTML5 media sequenced playback. And plain JavaScript, no library required.
+> HTML5 media sequenced playback API: play one or multiple sequences of a same audio or video with plain JavaScript.
 
 # Installation
 
@@ -38,13 +38,38 @@ sequencer.playAll();
 
 Adds new sequences to the actual stack.
 
+```js
+var sequencer = new MediaSequence(new Audio('path/to/audio.ogg'));
+
+sequencer.add([{ start: 0, end: 10 }, { start: 3, end: 6}]);
+sequencer.add([{ start: 11, end: 12 }]);
+```
+
 ## `sequencer.playAll()`
 
-Registers event listeners and starts the playback of all the sequences in a row.
+Starts the playback of all the sequences in a row.
 
 ## `sequencer.playFrom(start, end)`
 
-Starts the playback from the `start` time and stops automatically at the `end` time.
+Starts the playback from a `start` time and stops automatically at an `end` time.
+
+```js
+var sequencer = new MediaSequence(new Audio('path/to/audio.ogg'));
+
+sequencer.playFrom(10, 12); // will play from 10 seconds to 12 seconds
+```
+
+## `sequencer.playNext()`
+
+Plays the next consecutive sequence based on the current playback time.
+
+```js
+var el = new Audio('path/to/audio.ogg');
+var sequencer = new MediaSequence(el, sequences);
+
+el.currentTime = 12;
+sequencer.playNext(); // will play the next sequence starting after 12 seconds
+```
 
 ## `sequencer.getNext(referenceTime, options)`
 
