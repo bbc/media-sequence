@@ -1,7 +1,7 @@
 {
   "name": "media-sequence",
-  "version": "0.1.0",
-  "description": "Manual and automatic HTML5 media sequenced playback. And plain JavaScript, no library required.",
+  "version": "0.1.1",
+  "description": "HTML5 media sequenced playback API: play one or multiple sequences of a same audio or video with plain JavaScript.",
   "main": "./index.js",
   "scripts": {
     "test": "./node_modules/karma/bin/karma start",

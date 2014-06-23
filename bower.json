@@ -1,11 +1,11 @@
 {
   "name": "media-sequence",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "homepage": "https://github.com/oncletom/media-sequence",
   "authors": [
     "Thomas Parisot <thomas.parisot@bbc.co.uk>"
   ],
-  "description": "Manual and automatic HTML5 media sequenced playback. And plain JavaScript, no library required.",
+  "description": "HTML5 media sequenced playback API: play one or multiple sequences of a same audio or video with plain JavaScript.",
   "main": "index.js",
   "moduleType": [
     "globals"
