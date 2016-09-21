@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:bbcrd/media-sequence.git"
+    "url": "git@github.com:bbc/media-sequence.git"
   },
   "keywords": [
     "html5",
@@ -24,9 +24,9 @@
   "author": "Thomas Parisot <thomas.parisot@bbc.co.uk> (https://oncletom.io)",
   "license": "Apache-2",
   "bugs": {
-    "url": "https://github.com/bbcrd/media-sequence/issues"
+    "url": "https://github.com/bbc/media-sequence/issues"
   },
-  "homepage": "https://github.com/bbcrd/media-sequence",
+  "homepage": "https://github.com/bbc/media-sequence",
   "devDependencies": {
     "browserify": "^4.1.11",
     "chai": "^1.9.1",
